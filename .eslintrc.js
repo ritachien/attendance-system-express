@@ -1,10 +1,11 @@
 module.exports = {
   env: {
+    browser: true,
     commonjs: true,
     es2021: true,
     node: true,
   },
-  extends: 'airbnb-base',
+  extends: 'standard',
   overrides: [
   ],
   parserOptions: {
@@ -21,5 +22,6 @@ module.exports = {
         objects: 'always-multiline',
       },
     ],
+    'space-before-function-paren': ['error', 'always'],
   },
 }

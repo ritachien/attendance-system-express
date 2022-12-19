@@ -18,7 +18,6 @@ app.use(
 )
 app.use('/', routes)
 
-/* eslint-disable no-console */
 app.listen(PORT, () => {
   console.log(`app is listening on PORT: ${PORT}`)
 })
