@@ -15,5 +15,11 @@ module.exports = {
       'error',
       'never',
     ],
+    'comma-dangle': [
+      'error', {
+        arrays: 'always-multiline',
+        objects: 'always-multiline',
+      },
+    ],
   },
 }
