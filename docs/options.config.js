@@ -1,6 +1,6 @@
 module.exports = {
   // sort operation orders
-  operationsSorter(a, b) {
+  operationsSorter: function (a, b) {
     const order = {
       get: '0', post: '1', put: '2', delete: '3',
     }
