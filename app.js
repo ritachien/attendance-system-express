@@ -16,7 +16,7 @@ app.use(
   swaggerUi.serve,
   swaggerUi.setup(swaggerDoc, swaggerOptions)
 )
-app.use('/', routes)
+app.use('/api', routes)
 
 app.listen(PORT, () => {
   console.log(`app is listening on PORT: ${PORT}`)

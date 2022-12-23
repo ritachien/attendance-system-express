@@ -1,5 +1,7 @@
 'use strict'
-const { v4: UUIDV4 } = require('uuid')
+// const { v4: UUIDV4 } = require('uuid')
+const bcrypt = require('bcryptjs')
+const { randomUUID } = require('crypto')
 
 /** @type {import('sequelize-cli').Migration} */
 module.exports = {
@@ -9,23 +11,20 @@ module.exports = {
       [
         {
           account: 'admin',
-          password: 'tiadmin',
+          password: bcrypt.hashSync('tiadmin'),
           email: 'admin@example.com',
           name: 'admin',
         },
         {
           account: 'user1',
-          password: 'titaner',
+          password: bcrypt.hashSync('titaner'),
           email: 'user1@example.com',
           name: 'user1',
         },
       ].map(user => {
         return {
-          id: UUIDV4(),
-          account: user.account,
-          password: user.password,
-          email: user.email,
-          name: user.name,
+          ...user,
+          id: randomUUID(),
           created_at: new Date(),
           updated_at: new Date(),
         }
