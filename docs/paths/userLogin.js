@@ -19,7 +19,7 @@ module.exports = {
               },
               password: {
                 type: 'string',
-                example: '12345678',
+                example: 'titaner',
               },
             },
             required: [
@@ -36,6 +36,9 @@ module.exports = {
       },
       401: {
         description: '帳號或密碼錯誤',
+      },
+      403: {
+        description: '密碼錯誤次數過多，帳戶鎖定。',
       },
       500: {
         description: 'server error',
