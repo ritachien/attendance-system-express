@@ -14,12 +14,14 @@ module.exports = {
           password: bcrypt.hashSync('tiadmin'),
           email: 'admin@example.com',
           name: 'admin',
+          is_admin: true,
         },
         {
           account: 'user1',
           password: bcrypt.hashSync('titaner'),
           email: 'user1@example.com',
           name: 'user1',
+          is_admin: false,
         },
       ].map(user => {
         return {
