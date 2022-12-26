@@ -43,14 +43,17 @@ const userLogin = async (req, res, next) => {
     }
 
     // generate jwt token for valid inputs
-    const payload = { id: user.id }
+    const payload = {
+      id: user.id,
+      account: user.account,
+      isAdmin: user.isAdmin,
+    }
     const [token, exp] = generateToken(payload)
-    delete user.password
+
     return res.status(200).json({
       status: 'success',
       message: `Login success. Token will be expired in ${exp}`,
       token,
-      user,
     })
   } catch (err) {
     next(err)
