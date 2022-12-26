@@ -47,4 +47,21 @@ module.exports = {
       next(err)
     }
   },
+  getUsers: async (req, res, next) => {
+    try {
+      const users = await User.findAll({
+        raw: true,
+        where: {
+          isAdmin: false,
+        },
+        attributes: [
+          'id', 'account', 'name', 'email', 'errorTimes',
+        ],
+      })
+
+      return res.status(200).json(users)
+    } catch (err) {
+      next(err)
+    }
+  },
 }
