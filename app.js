@@ -1,5 +1,6 @@
 const express = require('express')
 const swaggerUi = require('swagger-ui-express')
+const cors = require('cors')
 
 const swaggerOptions = require('./docs/options.config')
 const swaggerDoc = require('./docs/index')
@@ -8,6 +9,7 @@ const routes = require('./routes')
 const PORT = process.env.PORT || 3000
 const app = express()
 
+app.use(cors())
 app.use(express.json())
 app.use(express.urlencoded({ extended: true }))
 
