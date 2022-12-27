@@ -6,6 +6,13 @@ const { generateToken } = require('../middleware/auth')
 module.exports = {
   adminLogin: async (req, res, next) => {
     const { account, password } = req.body
+    if (!account || !password) {
+      return res.status(400).json({
+        status: 'error',
+        message: '請填入所有必填欄位',
+      })
+    }
+
     const user = await User.findOne({
       raw: true,
       where: {

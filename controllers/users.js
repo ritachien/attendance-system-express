@@ -6,6 +6,13 @@ const { loginErrorLimit } = require('../config/company.config')
 
 const userLogin = async (req, res, next) => {
   const { account, password } = req.body
+  if (!account || !password) {
+    return res.status(400).json({
+      status: 'error',
+      message: '請填入所有必填欄位',
+    })
+  }
+
   const result = await User.findOne({
     where: {
       account,
