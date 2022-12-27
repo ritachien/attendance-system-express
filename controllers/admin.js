@@ -18,7 +18,7 @@ module.exports = {
       // admin not found
       if (!user) {
         return res.status(401).json({
-          message: 'Account not exists.',
+          message: '帳戶不存在',
         })
       }
 
@@ -26,7 +26,7 @@ module.exports = {
       if (!bcrypt.compareSync(password, user.password)) {
         return res.status(401).json({
           status: 'error',
-          message: 'Password incorrect.',
+          message: '密碼錯誤',
         })
       }
 
@@ -40,7 +40,7 @@ module.exports = {
 
       return res.status(200).json({
         status: 'success',
-        message: `Login success. Token will be expired in ${exp}`,
+        message: `登入成功。帳戶將在 ${exp} 後自動登出。`,
         token,
       })
     } catch (err) {

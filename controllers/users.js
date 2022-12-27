@@ -1,7 +1,8 @@
 const bcrypt = require('bcryptjs')
-const { User } = require('../models')
 
+const { User } = require('../models')
 const { generateToken } = require('../middleware/auth')
+const { loginErrorLimit } = require('../config/company.config')
 
 const userLogin = async (req, res, next) => {
   const { account, password } = req.body
@@ -16,25 +17,27 @@ const userLogin = async (req, res, next) => {
     // user not found
     if (!result) {
       return res.status(401).json({
-        message: 'Account not exists.',
+        status: 'error',
+        message: '帳戶不存在',
       })
     }
 
     const user = result.dataValues
     // if account locked
-    if (user.errorTimes === 5) {
+    if (user.errorTimes === loginErrorLimit) {
       return res.status(403).json({
         status: 'error',
-        message: 'Account locked. Please ask admin for help.',
+        message: '帳戶已上鎖，請尋求 Admin 協助。',
       })
     }
 
     // error password => add 1 to errorTimes
     if (!bcrypt.compareSync(password, user.password)) {
       await result.increment('errorTimes')
+      const errorTryRemain = loginErrorLimit - user.errorTimes - 1
       return res.status(401).json({
         status: 'error',
-        message: 'Password incorrect.',
+        message: `密碼錯誤。\n連續錯誤 ${errorTryRemain} 次後帳戶自動上鎖。`,
       })
     }
 
@@ -52,7 +55,7 @@ const userLogin = async (req, res, next) => {
 
     return res.status(200).json({
       status: 'success',
-      message: `Login success. Token will be expired in ${exp}`,
+      message: `登入成功。帳戶將在 ${exp} 後自動登出。`,
       token,
     })
   } catch (err) {
