@@ -1,7 +1,7 @@
 const router = require('express').Router()
 
-router.post('/test', (req, res) => {
-  res.send('user OK')
-})
+const { userClockIn } = require('../../controllers/users')
+
+router.post('/records', userClockIn)
 
 module.exports = router
