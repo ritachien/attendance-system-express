@@ -2,8 +2,8 @@ const bcrypt = require('bcryptjs')
 
 const { User, Record } = require('../models')
 const { generateToken } = require('../middleware/auth')
-const { loginErrorLimit } = require('../config/company.config')
-const { getRecordDate, isHoliday, isNotToday } = require('../utils/dateHelpers')
+const { loginErrorLimit, minHour, attendanceStatus } = require('../config/company.config')
+const { getRecordDate, getDuration, isHoliday, isNotToday } = require('../utils/dateHelpers')
 
 module.exports = {
   userLogin: async (req, res, next) => {
@@ -110,6 +110,57 @@ module.exports = {
 
       // return data
       return res.status(200).json(newRecord)
+    } catch (err) {
+      next(err)
+    }
+  },
+  userClockOut: async (req, res, next) => {
+    try {
+      // check input from front-end
+      const { recordId } = req.params
+      const { clockOut } = req.body
+      if (!recordId || !clockOut) {
+        return res.status(400).json({
+          status: 'error',
+          message: 'Require field missing',
+        })
+      }
+
+      // check if isNotToday
+      if (isNotToday(clockOut)) {
+        return res.status(422).json({
+          status: 'error',
+          message: 'Cannot add a not today record',
+        })
+      }
+
+      // find record
+      const result = await Record.findByPk(recordId)
+      if (!result) {
+        return res.status(404).json({
+          status: 'error',
+          message: 'Not found by provided recordId',
+        })
+      }
+
+      // update record
+      const record = result.dataValues
+      const duration = getDuration(record.clockIn, clockOut)
+      const status = duration >= minHour
+        ? attendanceStatus.ok
+        : attendanceStatus.error
+      const updatedRecord = await result.update({
+        duration,
+        clockOut,
+        status,
+      })
+
+      // return data
+      return res.status(200).json({
+        status: 'success',
+        message: 'record updated',
+        updatedRecord,
+      })
     } catch (err) {
       next(err)
     }

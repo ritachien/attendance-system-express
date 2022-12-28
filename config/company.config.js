@@ -4,7 +4,8 @@ const year = 2022
 // account would be locked by continuously password error
 const loginErrorLimit = 5
 
-// statuses of records
+// attendance related
+const minHour = 8
 const attendanceStatus = {
   error: 0,
   ok: 1,
@@ -16,6 +17,7 @@ const changeDayUntil = 5
 module.exports = {
   year,
   loginErrorLimit,
+  minHour,
   attendanceStatus,
   changeDayUntil,
 }

@@ -1,7 +1,8 @@
 const router = require('express').Router()
 
-const { userClockIn } = require('../../controllers/users')
+const { userClockIn, userClockOut } = require('../../controllers/users')
 
+router.patch('/records/:recordId', userClockOut)
 router.post('/records', userClockIn)
 
 module.exports = router

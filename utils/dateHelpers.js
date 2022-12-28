@@ -15,6 +15,11 @@ function getRecordDate (date) {
   return date
 }
 
+function getDuration (start, end) {
+  const ms = dayjs(end) - dayjs(start)
+  return Math.floor(ms / 1000 / 60 / 60)
+}
+
 function isHoliday (date) {
   const index = dayjs(date).format('YYYYMMDD')
   return calendar[index].isHoliday
@@ -26,6 +31,7 @@ function isNotToday (date) {
 
 module.exports = {
   getRecordDate,
+  getDuration,
   isHoliday,
   isNotToday,
 }
