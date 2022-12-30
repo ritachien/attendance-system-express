@@ -183,7 +183,7 @@ module.exports = {
       }
 
       const { account, password, passwordCheck, email } = req.body
-      if (!account.trim() && !password.trim() && !email.trim()) {
+      if (!account?.trim() && !password?.trim() && !email?.trim()) {
         return res.status(400).json({
           status: 'error',
           message: 'no data provided',
