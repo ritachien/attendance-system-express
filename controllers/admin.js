@@ -1,6 +1,7 @@
 const bcrypt = require('bcryptjs')
-const { User } = require('../models')
+const { randomUUID } = require('crypto')
 
+const { User } = require('../models')
 const { generateToken } = require('../middleware/auth')
 const { loginErrorLimit } = require('../config/company.config')
 
@@ -114,5 +115,36 @@ module.exports = {
     } catch (err) {
       next(err)
     }
+  },
+  addUser: async (req, res, next) => {
+    const { account, name, email } = req.body
+    if (!account.trim() || !name.trim() || !email.trim()) {
+      return res.status(400).json({
+        status: 'error',
+        message: 'missing required fields',
+      })
+    }
+
+    const duplicated = await User.findOne({ where: { account } })
+    if (duplicated) {
+      return res.status(422).json({
+        status: 'error',
+        message: `account: ${account} is occupied`,
+      })
+    }
+
+    const user = await User.create({
+      id: randomUUID(),
+      account: account.trim(),
+      name: name.trim(),
+      email: email.trim(),
+      password: bcrypt.hashSync('titaner'),
+    })
+
+    return res.status(200).json({
+      status: 'success',
+      message: 'user created',
+      user: { ...user.dataValues },
+    })
   },
 }
