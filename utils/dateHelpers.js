@@ -10,9 +10,9 @@ function getRecordDate (date) {
   const hour = dayjs(date).hour()
 
   if (hour < changeDayUntil) {
-    return dayjs(date).subtract(1, 'day')
+    return dayjs(date).subtract(1, 'day').format('YYYY-MM-DD')
   }
-  return date
+  return dayjs(date).format('YYYY-MM-DD')
 }
 
 function getDuration (start, end) {
