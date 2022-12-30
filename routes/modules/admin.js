@@ -1,6 +1,10 @@
 const router = require('express').Router()
-const adminControllers = require('../../controllers/admin')
+const {
+  getUsers,
+  editUser,
+} = require('../../controllers/admin')
 
-router.get('/users', adminControllers.getUsers)
+router.put('/users/:userId', editUser)
+router.get('/users', getUsers)
 
 module.exports = router
