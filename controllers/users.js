@@ -182,8 +182,8 @@ module.exports = {
         })
       }
 
-      const { account, password, passwordCheck, name } = req.body
-      if (!account && !password && !name) {
+      const { account, password, passwordCheck, email } = req.body
+      if (!account && !password && !email) {
         return res.status(400).json({
           status: 'error',
           message: 'no data provided',
@@ -207,9 +207,9 @@ module.exports = {
           value: account?.trim(),
         },
         {
-          field: 'name',
-          regex: /^\w{6,12}$/,
-          value: name?.trim(),
+          field: 'email',
+          regex: /^[-\w.]+@([-\w]+\.)+[-\w]{2,4}$/,
+          value: email?.trim(),
         },
         {
           field: 'password',
@@ -250,7 +250,7 @@ module.exports = {
         user: {
           id: newData.id,
           account: newData.account,
-          name: newData.name,
+          email: newData.email,
         },
       })
     } catch (err) {
