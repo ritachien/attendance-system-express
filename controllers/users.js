@@ -190,14 +190,6 @@ module.exports = {
         })
       }
 
-      const duplicated = await User.findOne({ where: { account: account.trim() } })
-      if (duplicated) {
-        return res.status(422).json({
-          status: 'error',
-          message: `account: ${account} is occupied`,
-        })
-      }
-
       const originalUser = await User.findByPk(userId)
       if (!originalUser) {
         return res.status(404).json({
