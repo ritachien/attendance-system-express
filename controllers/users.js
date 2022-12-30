@@ -126,7 +126,7 @@ module.exports = {
         })
       }
 
-      // check if isNotToday
+      // check date
       if (isNotToday(clockOut)) {
         return res.status(422).json({
           status: 'error',
@@ -143,8 +143,15 @@ module.exports = {
         })
       }
 
-      // update record
       const record = result.dataValues
+      if (record.date !== getRecordDate(clockOut)) {
+        return res.status(422).json({
+          status: 'error',
+          message: 'cannot clock out at different day',
+        })
+      }
+
+      // update record
       const duration = getDuration(record.clockIn, clockOut)
       const status = duration >= minHour
         ? attendanceStatus.ok
