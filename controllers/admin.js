@@ -2,6 +2,7 @@ const bcrypt = require('bcryptjs')
 const { User } = require('../models')
 
 const { generateToken } = require('../middleware/auth')
+const { loginErrorLimit } = require('../config/company.config')
 
 module.exports = {
   adminLogin: async (req, res, next) => {
@@ -67,6 +68,49 @@ module.exports = {
       })
 
       return res.status(200).json(users)
+    } catch (err) {
+      next(err)
+    }
+  },
+  editUser: async (req, res, next) => {
+    try {
+      const { unlock, resetPassword } = req.body
+      if (!unlock && !resetPassword) {
+        return res.status(200).json({
+          status: '200',
+          message: 'no data need to update',
+        })
+      }
+
+      const { userId } = req.params
+      if (!userId) {
+        return res.status(400).json({
+          status: 'error',
+          message: 'userId is required',
+        })
+      }
+
+      const originalData = await User.findByPk(userId)
+      if (!originalData) {
+        return res.status(404).json({
+          status: 'error',
+          message: `user of ${userId} not found`,
+        })
+      }
+
+      const newData = { ...originalData.dataValues }
+      if (newData.errorTimes >= loginErrorLimit && unlock) {
+        newData.errorTimes = 0
+      }
+      if (resetPassword) {
+        newData.password = bcrypt.hashSync('titaner')
+      }
+
+      await originalData.update({ ...newData })
+      return res.status(200).json({
+        status: 'success',
+        message: 'update success',
+      })
     } catch (err) {
       next(err)
     }
