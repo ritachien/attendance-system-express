@@ -183,7 +183,7 @@ module.exports = {
       }
 
       const { account, password, passwordCheck, email } = req.body
-      if (!account && !password && !email) {
+      if (!account.trim() && !password.trim() && !email.trim()) {
         return res.status(400).json({
           status: 'error',
           message: 'no data provided',
@@ -220,12 +220,23 @@ module.exports = {
 
       for (const { field, regex, value } of columns) {
         if (value) {
+          // 檢查 account 是否重複
+          if (field === 'account') {
+            const duplicated = await User.findOne({ where: { account: value } })
+            if (duplicated) {
+              return res.status(422).json({
+                status: 'error',
+                message: `account: ${account} is occupied`,
+              })
+            }
+          }
+
           // 檢查 password 是否與 passwordCheck 相同
           if (field === 'password' && value !== passwordCheck?.trim()) {
             errorMsg.push('password should equal to passwordCheck.')
           }
 
-          // 項目檢查及更新
+          // 項目格式檢查及內容更新
           if (regex.test(value)) {
             newData[field] = field === 'password' ? bcrypt.hashSync(value) : value
           } else {
