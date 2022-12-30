@@ -224,11 +224,13 @@ module.exports = {
           if (field === 'password' && value !== passwordCheck?.trim()) {
             errorMsg.push('password should equal to passwordCheck.')
           }
-          // 其他項目檢查及更新
+
+          // 項目檢查及更新
           if (regex.test(value)) {
-            newData[field] = value
+            newData[field] = field === 'password' ? bcrypt.hashSync(value) : value
+          } else {
+            errorMsg.push(`invalid ${field} format.`)
           }
-          errorMsg.push(`invalid ${field} format.`)
         }
       }
 
