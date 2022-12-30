@@ -172,4 +172,87 @@ module.exports = {
       next(err)
     }
   },
+  editUser: async (req, res, next) => {
+    try {
+      const { userId } = req.params
+      if (!userId) {
+        return res.status(400).json({
+          status: 'error',
+          message: 'userId is required',
+        })
+      }
+
+      const { account, password, passwordCheck, name } = req.body
+      if (!account && !password && !name) {
+        return res.status(400).json({
+          status: 'error',
+          message: 'no data provided',
+        })
+      }
+
+      const originalUser = await User.findByPk(userId)
+      if (!originalUser) {
+        return res.status(404).json({
+          status: 'error',
+          message: `user of ${userId} not found`,
+        })
+      }
+
+      const newData = { ...originalUser.dataValues }
+      const errorMsg = []
+      const columns = [ // 可更新項目
+        {
+          field: 'account',
+          regex: /^\w{6,12}$/,
+          value: account?.trim(),
+        },
+        {
+          field: 'name',
+          regex: /^\w{6,12}$/,
+          value: name?.trim(),
+        },
+        {
+          field: 'password',
+          regex: /^[\w!@#$%^&*]{6,20}$/,
+          value: password?.trim(),
+        },
+      ]
+
+      for (const { field, regex, value } of columns) {
+        if (value) {
+          // 檢查 password 是否與 passwordCheck 相同
+          if (field === 'password' && value !== passwordCheck?.trim()) {
+            errorMsg.push('password should equal to passwordCheck.')
+          }
+          // 其他項目檢查及更新
+          if (regex.test(value)) {
+            newData[field] = value
+          }
+          errorMsg.push(`invalid ${field} format.`)
+        }
+      }
+
+      // 回傳錯誤訊息
+      if (errorMsg.length > 0) {
+        return res.status(400).json({
+          status: 'error',
+          message: errorMsg,
+        })
+      }
+
+      // 資料庫更新
+      await originalUser.update({ ...newData })
+      return res.status(200).json({
+        status: 'success',
+        message: 'user updated',
+        user: {
+          id: newData.id,
+          account: newData.account,
+          name: newData.name,
+        },
+      })
+    } catch (err) {
+      next(err)
+    }
+  },
 }
