@@ -24,7 +24,10 @@ function generateCalendar (year) {
     })
 
     writeFileSync(outputFile, JSON.stringify({ ...obj }))
-    return rmSync(inputFile)
+    // 刪除前一年資料
+    rmSync(path.join(__dirname, `../config/govCalendar/${year - 1}.json`))
+    rmSync(path.join(__dirname, `../config/govCalendar/${year - 1}.csv`))
+    return
   } catch (err) {
     console.error(err)
   }

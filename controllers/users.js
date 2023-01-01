@@ -116,7 +116,11 @@ module.exports = {
       })
 
       // return data
-      return res.status(200).json(newRecord)
+      return res.status(200).json({
+        status: 'success',
+        message: 'record added success',
+        records: { ...newRecord.dataValues },
+      })
     } catch (err) {
       next(err)
     }
@@ -151,6 +155,13 @@ module.exports = {
       }
 
       const record = result.dataValues
+      if (record.userId !== req.user.id) {
+        return res.status(403).json({
+          status: 'error',
+          message: 'cannot clock out for other user\'s record',
+        })
+      }
+
       if (record.date !== getRecordDate(clockOut)) {
         return res.status(422).json({
           status: 'error',
@@ -173,7 +184,7 @@ module.exports = {
       return res.status(200).json({
         status: 'success',
         message: 'record updated',
-        updatedRecord,
+        records: { ...updatedRecord.dataValues },
       })
     } catch (err) {
       next(err)
