@@ -332,7 +332,7 @@ module.exports = {
         message: 'user not found',
       })
     }
-    console.log(user)
+
     return res.status(200).json({
       status: 'success',
       message: 'search success',
