@@ -66,6 +66,13 @@ module.exports = {
         status: 'success',
         message: `登入成功。帳戶將在 ${exp} 後自動登出。`,
         token,
+        user: {
+          id: user.id,
+          name: user.name,
+          account: user.account,
+          email: user.email,
+          isAdmin: user.isAdmin,
+        },
       })
     } catch (err) {
       next(err)
@@ -313,5 +320,23 @@ module.exports = {
     } catch (err) {
       next(err)
     }
+  },
+  getCurrentUser: async (req, res, next) => {
+    const { id } = req.user
+    const user = await User.findByPk(id, {
+      attributes: ['id', 'name', 'account', 'email', 'isAdmin'],
+    })
+    if (!user) {
+      return res.status(404).json({
+        status: 'error',
+        message: 'user not found',
+      })
+    }
+    console.log(user)
+    return res.status(200).json({
+      status: 'success',
+      message: 'search success',
+      user,
+    })
   },
 }
