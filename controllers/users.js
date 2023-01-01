@@ -268,4 +268,50 @@ module.exports = {
       next(err)
     }
   },
+  getUserRecords: async (req, res, next) => {
+    try {
+      const { userId } = req.params
+      const { date } = req.query
+
+      if (!userId) {
+        return req.status(400).json({
+          status: 'error',
+          message: 'missing required fields',
+        })
+      }
+
+      if (userId !== req.user.id) {
+        return res.status(403).json({
+          status: 'error',
+          message: 'cannot get other\'s records',
+        })
+      }
+
+      let records
+      if (date) {
+        records = await Record.findOne({
+          raw: true,
+          where: {
+            userId,
+            date,
+          },
+        })
+      } else {
+        records = await Record.findAll({
+          raw: true,
+          where: {
+            userId,
+          },
+        })
+      }
+
+      return res.status(200).json({
+        status: 'success',
+        message: 'search success',
+        records,
+      })
+    } catch (err) {
+      next(err)
+    }
+  },
 }
