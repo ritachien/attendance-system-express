@@ -51,6 +51,13 @@ module.exports = {
         status: 'success',
         message: `登入成功。帳戶將在 ${exp} 後自動登出。`,
         token,
+        user: {
+          id: user.id,
+          name: user.name,
+          account: user.account,
+          email: user.email,
+          isAdmin: user.isAdmin,
+        },
       })
     } catch (err) {
       next(err)

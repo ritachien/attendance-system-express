@@ -280,6 +280,8 @@ module.exports = {
           id: newData.id,
           account: newData.account,
           email: newData.email,
+          name: newData.name,
+          isAdmin: newData.isAdmin,
         },
       })
     } catch (err) {
