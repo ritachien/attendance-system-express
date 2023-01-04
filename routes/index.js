@@ -15,7 +15,7 @@ router.get('/users/getCurrentUser', authToken, getCurrentUser)
 
 // access with certain role
 router.use('/admin', authToken, isAdmin, admin)
-router.use('/users', authToken, isUser, users)
+router.use('/user', authToken, isUser, users)
 
 router.use('/', errorHandler)
 
