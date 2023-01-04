@@ -192,11 +192,11 @@ module.exports = {
   },
   editUser: async (req, res, next) => {
     try {
-      const { userId } = req.params
+      const userId = req.user.id
       if (!userId) {
-        return res.status(400).json({
+        return res.status(401).json({
           status: 'error',
-          message: 'userId is required',
+          message: 'please login first',
         })
       }
 
@@ -212,7 +212,7 @@ module.exports = {
       if (!originalUser) {
         return res.status(404).json({
           status: 'error',
-          message: `user of ${userId} not found`,
+          message: 'user not found',
         })
       }
 
@@ -280,6 +280,8 @@ module.exports = {
           id: newData.id,
           account: newData.account,
           email: newData.email,
+          name: newData.name,
+          isAdmin: newData.isAdmin,
         },
       })
     } catch (err) {
@@ -288,20 +290,13 @@ module.exports = {
   },
   getUserRecords: async (req, res, next) => {
     try {
-      const { userId } = req.params
+      const userId = req.user.id
       const { date } = req.query
 
       if (!userId) {
-        return req.status(400).json({
+        return req.status(401).json({
           status: 'error',
-          message: 'missing required fields',
-        })
-      }
-
-      if (userId !== req.user.id) {
-        return res.status(403).json({
-          status: 'error',
-          message: 'cannot get other\'s records',
+          message: 'please login first',
         })
       }
 
@@ -333,8 +328,8 @@ module.exports = {
     }
   },
   getCurrentUser: async (req, res, next) => {
-    const { id } = req.user
-    const user = await User.findByPk(id, {
+    const userId = req.user.id
+    const user = await User.findByPk(userId, {
       attributes: ['id', 'name', 'account', 'email', 'isAdmin'],
     })
     if (!user) {
