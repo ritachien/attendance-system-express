@@ -25,13 +25,8 @@ function isHoliday (date) {
   return calendar[index].isHoliday
 }
 
-function isNotToday (date) {
-  return !dayjs(date).isToday()
-}
-
 module.exports = {
   getRecordDate,
   getDuration,
   isHoliday,
-  isNotToday,
 }
