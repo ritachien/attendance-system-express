@@ -152,10 +152,17 @@ module.exports = {
       password: bcrypt.hashSync('titaner'),
     })
 
+    const rawData = user.dataValues
+
     return res.status(200).json({
       status: 'success',
       message: 'user created',
-      user: { ...user.dataValues },
+      user: {
+        id: rawData.id,
+        account: rawData.account,
+        name: rawData.name,
+        email: rawData.email,
+      },
     })
   },
 }
