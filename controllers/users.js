@@ -205,7 +205,7 @@ module.exports = {
       const columns = [ // 可更新項目
         {
           field: 'account',
-          regex: /^\w{6,12}$/,
+          regex: /^\w{5,12}$/,
           value: account?.trim(),
         },
         {
