@@ -4,6 +4,7 @@ const userLogin = require('./userLogin')
 const getCurrentUser = require('./getCurrentUser')
 
 // admin
+const addUser = require('./admin/addUser')
 const getUsers = require('./admin/getUsers')
 const adminEditUser = require('./admin/adminEditUser')
 
@@ -19,7 +20,10 @@ module.exports = {
   '/users/login': userLogin,
   '/users/getCurrentUser': getCurrentUser,
   // admin
-  '/admin/users': getUsers,
+  '/admin/users': {
+    ...getUsers,
+    ...addUser,
+  },
   '/admin/users/{userId}': adminEditUser,
   // user
   '/user': editUser,
