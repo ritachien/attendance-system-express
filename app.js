@@ -9,13 +9,12 @@ const routes = require('./routes')
 const PORT = process.env.PORT || 3000
 const app = express()
 
+const baseURL = process.env.NODE_ENV === 'production'
+  ? 'https://attendace-system-vue.vercel.app'
+  : 'http://localhost:5173'
+
 const corsOptions = {
-  origin: [
-    // production
-    'https://attendace-system-vue.vercel.app',
-    // dev-only: comment out when production
-    // 'http://localhost:5173',
-  ],
+  origin: baseURL,
   methods: ['GET', 'POST', 'PATCH', 'PUT'],
   allowedHeaders: ['Content-Type', 'Authorization'],
 }
