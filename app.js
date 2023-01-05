@@ -10,7 +10,7 @@ const PORT = process.env.PORT || 3000
 const app = express()
 
 const baseURL = process.env.NODE_ENV === 'production'
-  ? 'https://attendace-system-vue.vercel.app'
+  ? 'https://attendance-system-vue.vercel.app'
   : 'http://localhost:5173'
 
 const corsOptions = {

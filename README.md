@@ -4,10 +4,10 @@ attendance-system 是一個考勤記錄系統。使用者(user)可以用 GPS 打
 * 【[API 文件](https://attendance-system-express-production.up.railway.app/api-docs/)】使用 Swagger-UI 製作。  
 * 【[前端 repo 連結](https://github.com/ritachien/attendance-system-vue)】 attendance-system-vue  
 
-更多專案相關資訊請至 [Wiki](https://github.com/ritachien/attendace-system-express/wiki) 查看!
+更多專案相關資訊請至 [Wiki](https://github.com/ritachien/attendance-system-express/wiki) 查看!
 
 ## Demo  
-* [Demo 連結](https://attendace-system-vue.vercel.app/)  
+* [Demo 連結](https://attendance-system-vue.vercel.app/)  
 * 可用種子帳號進行登入，管理者 1 名、使用者 10 名(user1~user10)。  
 * 測試時，`user1` 帳號請勿修改帳號/密碼，其他 user 請在測試後改回預設帳號/密碼。  
   ```js
