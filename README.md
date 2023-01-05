@@ -1,5 +1,5 @@
 # attendance-system-express  
-attendace-system 是一個考勤記錄系統。使用者(user)可以用 GPS 打卡、QRcode 打卡；管理者(admin)可以管理使用者及出勤紀錄。本專案採用前後分離方式進行開發，這個 repo 是後端部分，使用 NodeJS + Express 撰寫。  
+attendance-system 是一個考勤記錄系統。使用者(user)可以用 GPS 打卡、QRcode 打卡；管理者(admin)可以管理使用者及出勤紀錄。本專案採用前後分離方式進行開發，這個 repo 是後端部分，使用 NodeJS + Express 撰寫。  
 
 * 【[API 文件](https://attendance-system-express-production.up.railway.app/api-docs/)】使用 Swagger-UI 製作。  
 * 【[前端 repo 連結](https://github.com/ritachien/attendance-system-vue)】 attendance-system-vue  
