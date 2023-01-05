@@ -3,7 +3,7 @@ const bcrypt = require('bcryptjs')
 const { User, Record } = require('../models')
 const { generateToken } = require('../middleware/auth')
 const { loginErrorLimit, minHour, attendanceStatus } = require('../config/company.config')
-const { getRecordDate, getDuration, isHoliday, isNotToday } = require('../utils/dateHelpers')
+const { getRecordDate, getDuration, isHoliday } = require('../utils/dateHelpers')
 
 module.exports = {
   userLogin: async (req, res, next) => {
@@ -81,23 +81,15 @@ module.exports = {
   userClockIn: async (req, res, next) => {
     try {
       // check input from front-end
-      const { clockIn } = req.body
-      if (!req.user.id || !clockIn) {
-        return res.status(400).json({
+      if (!req.user.id) {
+        return res.status(401).json({
           status: 'error',
-          message: 'Require field missing',
-        })
-      }
-
-      // check if isNotToday
-      if (isNotToday(clockIn)) {
-        return res.status(422).json({
-          status: 'error',
-          message: 'Cannot add a not today record',
+          message: 'please login first',
         })
       }
 
       // calculate record 日期
+      const clockIn = new Date()
       const date = getRecordDate(clockIn)
 
       // check if it's holiday
@@ -129,43 +121,35 @@ module.exports = {
     try {
       // check input from front-end
       const { recordId } = req.params
-      const { clockOut } = req.body
-      if (!recordId || !clockOut) {
+      if (!recordId) {
         return res.status(400).json({
           status: 'error',
           message: 'Require field missing',
         })
       }
 
-      // check date
-      if (isNotToday(clockOut)) {
-        return res.status(422).json({
-          status: 'error',
-          message: 'Cannot add a not today record',
-        })
-      }
+      // find record(同時檢查 id 和 date，避免打下班卡同時剛好遇到換日)
+      const clockOut = new Date()
+      const result = await Record.findOne({
+        where: {
+          id: recordId,
+          date: getRecordDate(clockOut),
+        },
+      })
 
-      // find record
-      const result = await Record.findByPk(recordId)
       if (!result) {
         return res.status(404).json({
           status: 'error',
-          message: 'Not found by provided recordId',
+          message: 'Not found by recordId or record date',
         })
       }
 
+      // get raw data and checks
       const record = result.dataValues
       if (record.userId !== req.user.id) {
         return res.status(403).json({
           status: 'error',
           message: 'cannot clock out for other user\'s record',
-        })
-      }
-
-      if (record.date !== getRecordDate(clockOut)) {
-        return res.status(422).json({
-          status: 'error',
-          message: 'cannot clock out at different day',
         })
       }
 
