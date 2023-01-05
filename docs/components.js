@@ -2,10 +2,10 @@ const apiResponse = require('./schemas/apiResponse')
 
 module.exports = {
   securitySchemes: {
-    bearerAuth: {
-      type: 'http',
-      scheme: 'bearer',
-      bearerFormat: 'JWT',
+    ApiKeyAuth: {
+      type: 'apiKey',
+      in: 'header',
+      name: 'Authorization',
     },
   },
   schemas: {
