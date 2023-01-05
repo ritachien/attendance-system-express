@@ -26,7 +26,7 @@ app.use(express.urlencoded({ extended: true }))
 app.use(
   '/api-docs',
   swaggerUi.serve,
-  swaggerUi.setup(swaggerDoc, swaggerOptions)
+  swaggerUi.setup(swaggerDoc, { swaggerOptions })
 )
 app.use('/api', routes)
 
