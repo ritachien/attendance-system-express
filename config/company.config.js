@@ -1,5 +1,7 @@
+const dayjs = require('dayjs')
+
 // calendar usage
-const year = 2023
+const year = dayjs().year()
 
 // account would be locked by continuously password error
 const loginErrorLimit = 5
