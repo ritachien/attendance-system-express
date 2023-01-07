@@ -5,8 +5,9 @@ const getCurrentUser = require('./getCurrentUser')
 
 // admin
 const addUser = require('./admin/addUser')
-const getUsers = require('./admin/getUsers')
 const adminEditUser = require('./admin/adminEditUser')
+const getQrString = require('./admin/getQrString')
+const getUsers = require('./admin/getUsers')
 
 // user
 const editUser = require('./user/editUser')
@@ -20,6 +21,7 @@ module.exports = {
   '/users/login': userLogin,
   '/users/getCurrentUser': getCurrentUser,
   // admin
+  '/admin/qrcode': getQrString,
   '/admin/users': {
     ...getUsers,
     ...addUser,

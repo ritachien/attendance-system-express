@@ -1,5 +1,7 @@
 const router = require('express').Router()
 
+const isAllowedClock = require('../../middleware/isAllowedClock')
+
 const {
   userClockIn,
   userClockOut,
@@ -7,8 +9,8 @@ const {
   getUserRecords,
 } = require('../../controllers/users')
 
-router.patch('/records/:recordId', userClockOut)
-router.post('/records', userClockIn)
+router.patch('/records/:recordId', isAllowedClock, userClockOut)
+router.post('/records', isAllowedClock, userClockIn)
 
 router.get('/records', getUserRecords)
 router.put('/', editUser)

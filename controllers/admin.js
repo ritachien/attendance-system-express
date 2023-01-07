@@ -4,6 +4,7 @@ const { randomUUID } = require('crypto')
 const { User } = require('../models')
 const { generateToken } = require('../middleware/auth')
 const { loginErrorLimit } = require('../config/company.config')
+const { qrGenerator } = require('../utils/qrHelpers')
 
 module.exports = {
   adminLogin: async (req, res, next) => {
@@ -163,6 +164,14 @@ module.exports = {
         name: rawData.name,
         email: rawData.email,
       },
+    })
+  },
+  getQrString: async (req, res, next) => {
+    const qrString = qrGenerator()
+    return res.status(200).json({
+      status: 'success',
+      message: 'qrString generated',
+      data: qrString,
     })
   },
 }
