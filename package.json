@@ -15,10 +15,11 @@
   "dependencies": {
     "bcryptjs": "^2.4.3",
     "cors": "^2.8.5",
-    "dayjs": "^1.11.7",
     "express": "^4.18.2",
     "geolocation-utils": "^1.2.5",
     "jsonwebtoken": "^9.0.0",
+    "moment": "^2.29.4",
+    "moment-timezone": "^0.5.40",
     "mysql2": "^2.3.3",
     "sequelize": "^6.27.0",
     "sequelize-cli": "^6.5.2",
