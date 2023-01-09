@@ -1,7 +1,7 @@
 const moment = require('moment')
 
 // calendar usage
-const year = moment().year()
+const year = moment().tz('Asia/Taipei').year()
 
 // account would be locked by continuously password error
 const loginErrorLimit = 5
