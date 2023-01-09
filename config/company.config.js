@@ -5,7 +5,7 @@ dayjs.extend(utc)
 dayjs.extend(timezone)
 
 // calendar usage
-const year = dayjs().tz('Asia/Taipei').year()
+const year = (dayjs().tz('Asia/Taipei').year()).toString()
 
 // account would be locked by continuously password error
 const loginErrorLimit = 5
