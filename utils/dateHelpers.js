@@ -30,6 +30,7 @@ function getDuration (start, end) {
 
 function isHoliday (date) {
   const index = dayjs(date).format('YYYYMMDD')
+  console.log(date, index)
   return calendar[index].isHoliday
 }
 

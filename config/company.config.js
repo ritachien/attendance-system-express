@@ -1,7 +1,11 @@
 const dayjs = require('dayjs')
+const utc = require('dayjs/plugin/utc')
+const timezone = require('dayjs/plugin/timezone')
+dayjs.extend(utc)
+dayjs.extend(timezone)
 
 // calendar usage
-const year = dayjs().year()
+const year = dayjs().tz('Asia/Taipei').year()
 
 // account would be locked by continuously password error
 const loginErrorLimit = 5
