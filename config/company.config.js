@@ -1,11 +1,7 @@
-const dayjs = require('dayjs')
-const utc = require('dayjs/plugin/utc')
-const timezone = require('dayjs/plugin/timezone')
-dayjs.extend(utc)
-dayjs.extend(timezone)
+const moment = require('moment')
 
 // calendar usage
-const year = dayjs().tz('Asia/Taipei').year()
+const year = moment().tz('Asia/Taipei').year()
 
 // account would be locked by continuously password error
 const loginErrorLimit = 5
