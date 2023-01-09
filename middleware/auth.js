@@ -2,7 +2,7 @@ require('dotenv').config()
 const jwt = require('jsonwebtoken')
 
 const options = {
-  expiresIn: '4h',
+  expiresIn: '7d',
 }
 
 const generateToken = (payload) => {

@@ -22,9 +22,39 @@ module.exports = {
         required: true,
       },
     ],
+    requestBody: {
+      description: '**position 或 qrString 必須提供其中一種。**',
+      required: true,
+      content: {
+        'application/json': {
+          schema: {
+            type: 'object',
+            properties: {
+              position: {
+                type: 'object',
+                properties: {
+                  lat: {
+                    type: 'integer',
+                    example: 25.05599234479,
+                  },
+                  lng: {
+                    type: 'integer',
+                    example: 121.5443365400,
+                  },
+                },
+              },
+              qrString: {
+                type: 'string',
+                example: 'a random string generate by admin',
+              },
+            },
+          },
+        },
+      },
+    },
     responses: {
       200: {
-        description: '成功取得資料',
+        description: '成功打卡',
       },
       401: {
         description: '請先登入',

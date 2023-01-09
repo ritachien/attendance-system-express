@@ -1,9 +1,17 @@
 const dayjs = require('dayjs')
 const isToday = require('dayjs/plugin/isToday')
+const utc = require('dayjs/plugin/utc')
+const timezone = require('dayjs/plugin/timezone')
+dayjs.extend(utc)
+dayjs.extend(timezone)
 dayjs.extend(isToday)
 
 const { changeDayUntil, year } = require('../config/company.config')
 const calendar = require(`../config/govCalendar/${year}.json`)
+
+function formatInTaipeiTime (date) {
+  return dayjs(date).tz('Asia/Taipei')
+}
 
 function getRecordDate (date) {
   // get hour of local time
@@ -26,6 +34,7 @@ function isHoliday (date) {
 }
 
 module.exports = {
+  formatInTaipeiTime,
   getRecordDate,
   getDuration,
   isHoliday,
