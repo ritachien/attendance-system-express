@@ -27,16 +27,6 @@ function isAllowedClock (req, res, next) {
 function isInRange (position) {
   const placesAllowToClock = [
     {
-      // 測試用
-      lat: 25.155615260794903,
-      lng: 121.77248862051134,
-    },
-    {
-      // 測試用
-      lat: 25.093220189685358,
-      lng: 121.73556870775955,
-    },
-    {
       // 新加坡商鈦坦科技
       lat: 25.057640384418786,
       lng: 121.61235508426716,
