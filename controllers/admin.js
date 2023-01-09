@@ -137,19 +137,53 @@ module.exports = {
       })
     }
 
-    const duplicated = await User.findOne({ where: { account } })
-    if (duplicated) {
-      return res.status(422).json({
-        status: 'error',
-        message: `account: ${account} is occupied`,
-      })
+    const errorMsg = []
+    const columns = [ // 可更新項目
+      {
+        field: 'account',
+        regex: /^\w{5,12}$/,
+        value: account?.trim(),
+      },
+      {
+        field: 'email',
+        regex: /^[-\w.]+@([-\w]+\.)+[-\w]{2,4}$/,
+        value: email?.trim(),
+      },
+      {
+        field: 'name',
+        regex: /^.+$/,
+        value: name?.trim(),
+      },
+    ]
+    const newData = {}
+
+    for (const { field, regex, value } of columns) {
+      if (value) {
+        // 檢查 account 是否重複
+        if (field === 'account') {
+          const duplicated = await User.findOne({ where: { account: value } })
+          if (duplicated) {
+            return res.status(422).json({
+              status: 'error',
+              message: `account: ${account} is occupied`,
+            })
+          }
+        }
+
+        // 項目格式檢查及內容更新
+        if (regex.test(value)) {
+          newData[field] = value
+        } else {
+          errorMsg.push(`invalid ${field} format.`)
+        }
+      }
     }
 
     const user = await User.create({
       id: randomUUID(),
-      account: account.trim(),
-      name: name.trim(),
-      email: email.trim(),
+      account: newData.account,
+      name: newData.name,
+      email: newData.email,
       password: bcrypt.hashSync('titaner'),
     })
 
