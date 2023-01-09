@@ -2,8 +2,9 @@ const { readFileSync, writeFileSync, rmSync } = require('node:fs')
 const path = require('node:path')
 
 const { year } = require('../config/company.config')
-const inputFile = path.join(__dirname, `../config/govCalendar/${year}.csv`)
-const outputFile = path.join(__dirname, `../config/govCalendar/${year}.json`)
+// 取得並產出新年度資料
+const inputFile = path.join(__dirname, `../config/govCalendar/${year + 1}.csv`)
+const outputFile = path.join(__dirname, `../config/govCalendar/${year + 1}.json`)
 
 function generateCalendar (year) {
   try {
