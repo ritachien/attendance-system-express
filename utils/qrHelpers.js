@@ -5,8 +5,8 @@ const validQRcode = new Map()
 
 function qrGenerator () {
   const qrString = randomUUID()
-  const halfHourLater = moment().tz('Asia/Taipei').add(0.5, 'hour')
-  validQRcode.set(qrString, halfHourLater)
+  const aMinuteLater = moment().tz('Asia/Taipei').add(1, 'minute')
+  validQRcode.set(qrString, aMinuteLater)
   return qrString
 }
 
