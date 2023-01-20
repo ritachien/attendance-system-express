@@ -1,8 +1,3 @@
-const moment = require('moment')
-
-// calendar usage
-const year = moment().tz('Asia/Taipei').year()
-
 // account would be locked by continuously password error
 const loginErrorLimit = 5
 
@@ -17,7 +12,6 @@ const attendanceStatus = {
 const changeDayUntil = 5
 
 module.exports = {
-  year,
   loginErrorLimit,
   minHour,
   attendanceStatus,

@@ -1,14 +1,17 @@
-const moment = require('moment')
+const dayjs = require('dayjs')
+const utc = require('dayjs/plugin/utc')
+dayjs.extend(utc)
 
-const { changeDayUntil, year } = require('../config/company.config')
+const year = convertToTaipeiTime(new Date()).year()
 const calendar = require(`../config/govCalendar/${year}.json`)
+const { changeDayUntil } = require('../config/company.config')
 
-function formatInTaipeiTime (date) {
-  return moment(date).tz('Asia/Taipei')
+function convertToTaipeiTime (time) {
+  return dayjs(time).utc().add(8, 'hours')
 }
 
-function getRecordDate (date) {
-  const day = moment(date).tz('Asia/Taipei')
+function getRecordDate (time) {
+  const day = convertToTaipeiTime(time)
   const hour = day.hour()
 
   if (hour < changeDayUntil) {
@@ -18,17 +21,17 @@ function getRecordDate (date) {
 }
 
 function getDuration (start, end) {
-  const ms = moment(end) - moment(start)
+  const ms = dayjs(end) - dayjs(start)
   return Math.floor(ms / 1000 / 60 / 60)
 }
 
-function isHoliday (date) {
-  const index = moment(date).tz('Asia/Taipei').format('YYYYMMDD')
+function isHoliday (time) {
+  const index = getRecordDate(time).replaceAll('-', '')
   return calendar[index].isHoliday
 }
 
 module.exports = {
-  formatInTaipeiTime,
+  convertToTaipeiTime,
   getRecordDate,
   getDuration,
   isHoliday,
