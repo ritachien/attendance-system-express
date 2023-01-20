@@ -3,7 +3,7 @@ const bcrypt = require('bcryptjs')
 const { User, Record } = require('../models')
 const { generateToken } = require('../middleware/auth')
 const { loginErrorLimit, minHour, attendanceStatus } = require('../config/company.config')
-const { getRecordDate, getDuration, isHoliday, formatInTaipeiTime } = require('../utils/dateHelpers')
+const { getRecordDate, getDuration, isHoliday, convertToTaipeiTime } = require('../utils/dateHelpers')
 
 module.exports = {
   userLogin: async (req, res, next) => {
@@ -89,7 +89,7 @@ module.exports = {
       }
 
       // calculate record 日期
-      const clockIn = formatInTaipeiTime(new Date())
+      const clockIn = convertToTaipeiTime(new Date())
       const date = getRecordDate(clockIn)
 
       // check if it's holiday
@@ -129,7 +129,7 @@ module.exports = {
       }
 
       // find record(同時檢查 id 和 date，避免打下班卡同時剛好遇到換日)
-      const clockOut = formatInTaipeiTime(new Date())
+      const clockOut = convertToTaipeiTime(new Date())
       const result = await Record.findOne({
         where: {
           id: recordId,
