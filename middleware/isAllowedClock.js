@@ -36,6 +36,11 @@ function isInRange (position) {
       lat: 25.05599234479154,
       lng: 121.5443365400908,
     },
+    {
+      // For testing
+      lat: 25.05066242987015,
+      lng: 121.53600488865158,
+    },
   ]
 
   const { lat, lng } = position
