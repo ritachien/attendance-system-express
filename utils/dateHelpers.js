@@ -13,7 +13,6 @@ function convertToTaipeiTime (time) {
 function getRecordDate (time) {
   const day = convertToTaipeiTime(time)
   const hour = day.hour()
-
   if (hour < changeDayUntil) {
     return day.subtract(1, 'day').format('YYYY-MM-DD')
   }
@@ -25,8 +24,8 @@ function getDuration (start, end) {
   return Math.floor(ms / 1000 / 60 / 60)
 }
 
-function isHoliday (time) {
-  const index = getRecordDate(time).replaceAll('-', '')
+function isHoliday (date) {
+  const index = date.replaceAll('-', '')
   return calendar[index].isHoliday
 }
 
